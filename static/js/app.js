@@ -1,7 +1,7 @@
 const playingSpan = document.getElementById("playing")
 const players = ["blue", "red"]
 const scores = [0, 0]
-const cells = Array(12).fill(4)
+const cells = Array(12)
 const cellsElement = document.querySelectorAll(`button.cell`)
 
 let player = 0
@@ -21,9 +21,9 @@ let textures = [
 function init() {
     player = Math.floor(Math.random() > 0.5 % 2)
     updatePlaying()
-    updateCells()
     setupButtonEvent()
-    addSeeds()
+    initSeeds()
+    updateCells()
 }
 
 function setupButtonEvent() {
@@ -35,21 +35,26 @@ function setupButtonEvent() {
 }
 
 function play(index) {
-    let a = cells[index]
-    if (a == 0) {
+    let seeds = cells[index]
+    if (seeds.length == 0) {
         return
     }
-    cells[index] = 0
+    cells[index] = []
     let x = index
-    for (let i = 1; i <= a; i++) {
+    while (seeds.length) {
         x--
         if (x < 0) {
             x = 11
         }
-        cells[x] += 1
-        if (cells[x] > 1 && cells[x] < 4 && !(x >= 6 * player && x < 6 * (player + 1)) ) {
-            scores[player] += cells[x]
-            cells[x] = 0
+        let seed = seeds.pop()
+        addSeed(x, seed)
+        cells[x].push(seed)
+        if (cells[x].length > 1 && cells[x].length < 4 && !(x >= 6 * player && x < 6 * (player + 1)) ) {
+            scores[player] += cells[x].length
+            cells[x].forEach(seed => {
+                seed.remove()
+            })
+            cells[x] = []
             updateScore()
         }
     }
@@ -91,20 +96,37 @@ function updatePlaying() {
 
 function updateCells() {
     cellsElement.forEach((cell, i) => {
-        cell.querySelector("span").textContent = cells[parseInt(cell.id)]
+        cell.querySelector("span").textContent = cells[parseInt(cell.id)].length
     })
 }
 
-function addSeeds() {
-    document.querySelectorAll(".cell").forEach((cell) => {
-        for (let i = 0; i < 15; i++) {
-            let top = Math.random() * 60 + 5
-            let left = Math.random() * 60 + 5
-            let rot = Math.random() * 90 - 45
-            let texture = textures[Math.floor(Math.random() * textures.length)]
-            cell.innerHTML += `<img src="https://assets.mcasset.cloud/1.21.4/assets/minecraft/textures/item/${texture}.png" class="seed" style="--top: ${top}px; --left: ${left}px; --rot: ${rot}deg;">`
+function initSeeds() {
+    for (let i = 0; i < cells.length; i++) {
+        cells[i] = []
+        for (let j = 0; j < 4; j++) {
+            let seed = createSeed()
+            addSeed(i, seed)
+            cells[i].push(seed)
         }
-    })
+    }
+}
+
+function createSeed() {
+    let top = Math.random() * 60 + 5
+    let left = Math.random() * 60 + 5
+    let rot = Math.random() * 90 - 45
+    let texture = textures[Math.floor(Math.random() * textures.length)]
+
+    let seed = document.createElement("img")
+    seed.src = `https://assets.mcasset.cloud/1.21.4/assets/minecraft/textures/item/${texture}.png`
+    seed.classList.add("seed")
+    seed.style = `--top: ${top}px; --left: ${left}px; --rot: ${rot}deg;`
+
+    return seed
+}
+
+function addSeed(id, seed) {
+    document.getElementById(`${id}`).appendChild(seed)
 }
 
 window.onload = init
