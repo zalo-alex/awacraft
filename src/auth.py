@@ -11,11 +11,19 @@ def auth_route(func):
                 "error": "Unauthorized"
             }, 401
         
-        user = User.query.filter_by(id=session.get("user")).one_or_404()
+        user = User.query.filter_by(id=session.get("user", {}).get("id")).one_or_404()
         return func(user, *args, **kwargs)
     
     wrapper.__name__ = func.__name__ 
     return wrapper
+
+def get_user():
+    user = User.query.filter_by(id=session.get("user", {}).get("id")).one_or_none()
+    if not user:
+        return {}
+    return {
+        "username": user.username
+    }
 
 def set_user_session(user):
     session["user"] = {

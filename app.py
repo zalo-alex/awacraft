@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from flask_migrate import Migrate
 from src.models import db, User
-from src.auth import set_user_session
+from src.auth import set_user_session, get_user
 import os
 
 app = Flask(__name__)
@@ -76,6 +76,17 @@ def login():
     return {
         "message": "Successfuly logged-in."
     }, 200
+
+@app.route("/api/auth/logout", methods=["POST"])
+def logout():
+    session.pop('user', None)
+    return {
+        "message": "OK."
+    }
+
+@app.route("/api/user")
+def api_user():
+    return get_user()
 
 if __name__ == "__main__":
     app.run(debug=True)

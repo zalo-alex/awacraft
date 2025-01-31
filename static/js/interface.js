@@ -8,6 +8,9 @@ const loginUsername = document.getElementById("login-username")
 const loginPassword = document.getElementById("login-password")
 const loginResult = document.getElementById("login-result")
 
+const loginOption = document.getElementById("login-option")
+const logoutOption = document.getElementById("logout-option")
+
 function playSingleplayer() {
     interface.style.display = "none"
 }
@@ -21,34 +24,39 @@ async function register() {
     let username = registerUsername.value
     let password = registerPassword.value 
 
-    let res = await fetch("/api/auth/register", {
-        method: "POST",
-        body: JSON.stringify({
-            username: username,
-            password: password
-        }),
-        headers: {
-            "Content-Type": "application/json"
-        }
+    let data = await POST("/api/auth/register", {
+        username: username,
+        password: password
     })
-    let data = await res.json()
     registerResult.textContent = data.message
+    await loginOptionsToggle()
 }
 
 async function login() {
     let username = loginUsername.value
     let password = loginPassword.value 
 
-    let res = await fetch("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify({
-            username: username,
-            password: password
-        }),
-        headers: {
-            "Content-Type": "application/json"
-        }
+    let data = await POST("/api/auth/login", {
+        username: username,
+        password: password
     })
-    let data = await res.json()
     loginResult.textContent = data.message
+    await loginOptionsToggle()
 }
+
+async function logout() {
+    await POST("/api/auth/logout")
+    await loginOptionsToggle()
+}
+
+async function loginOptionsToggle() {
+    if (await getUser()) {
+        logoutOption.classList.remove("hidden")
+        loginOption.classList.add("hidden")
+    } else {
+        loginOption.classList.remove("hidden")
+        logoutOption.classList.add("hidden")
+    }
+}
+
+window.addEventListener("load", loginOptionsToggle)

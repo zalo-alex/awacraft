@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/interface.css">
     <link rel="stylesheet" href="/static/css/tnt.css">
+
+    <script src="/static/js/api.js"></script>
+
     <script src="/static/js/app.js" defer></script>
     <script src="/static/js/tnt.js" defer></script>
     <script src="/static/js/interface.js" defer></script>
@@ -46,8 +49,13 @@
         <div class="page show" id="page-home">
             <button class="btn" onclick="playSingleplayer()">Singleplayer</button>
             <button disabled class="btn mt">Customization</button>
-            <button class="btn mt" onclick="showPage('login')">Login</button>
-            <button class="btn" onclick="showPage('register')">Register</button>
+            <div class="container hidden" id="login-option">
+                <button class="btn mt" onclick="showPage('login')">Login</button>
+                <button class="btn" onclick="showPage('register')">Register</button>
+            </div>
+            <div class="container hidden" id="logout-option">
+                <button class="btn" onclick="logout()">Log out</button>
+            </div>
         </div>
 
         <div class="page" id="page-register">
