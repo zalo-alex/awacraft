@@ -2,12 +2,16 @@ from flask import Flask, render_template, request, session
 from flask_migrate import Migrate
 from src.models import db, User
 from src.auth import set_user_session, get_user
+from flask_sock import Sock
+from src.games import Games
 import os
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db.sqlite' # TODO: Should use the volume for docker !
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SECRET_KEY'] = os.urandom(24)
+
+sock = Sock(app)
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -87,6 +91,24 @@ def logout():
 @app.route("/api/user")
 def api_user():
     return get_user()
+
+@app.route("/api/games/available")
+def api_games_available():
+    return Games.list_available()
+
+@app.route("/api/games/create", methods=["POST"])
+def api_games_create():
+    name = request.json.get("name")
+
+    if name < 2 or name > 20:
+        return {
+            "message": "Invalid name length, should be between 2 and 20"
+        }
+    Games.create(name, None)
+
+@sock.route("/ws")
+def ws(client):
+    pass
 
 if __name__ == "__main__":
     app.run(debug=True)

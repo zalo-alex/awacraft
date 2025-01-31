@@ -48,6 +48,7 @@
 
         <div class="page show" id="page-home">
             <button class="btn" onclick="playSingleplayer()">Singleplayer</button>
+            <button id="multiplayer-btn" class="btn" disabled onclick="showPage('multiplayer')">Multiplayer</button>
             <button disabled class="btn mt">Customization</button>
             <div class="container hidden" id="login-option">
                 <button class="btn mt" onclick="showPage('login')">Login</button>
@@ -71,6 +72,15 @@
             <input class="input" placeholder="Password" type="password" id="login-password"/>
             <button class="btn" onclick="login()">Login</button>
             <span class="text" id="login-result"></span>
+            <button class="btn mt" onclick="showPage('home')">Back</button>
+        </div>
+
+        <div class="page" id="page-multiplayer">
+            <div class="container" id="games-container">
+
+            </div>
+            <input class="input" placeholder="Name" id="multiplayer-name"/>
+            <button class="btn" onclick="createGame()">Create</button>
             <button class="btn mt" onclick="showPage('home')">Back</button>
         </div>
     </div>

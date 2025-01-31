@@ -1,5 +1,6 @@
 const playingSpan = document.getElementById("playing")
 const players = ["blue", "red"]
+const playersSeed = ["wheat_seeds", "beetroot_seeds"]
 const scores = [0, 0]
 const cells = Array(12)
 const cellsElement = document.querySelectorAll(`button.cell`)
@@ -91,7 +92,6 @@ function updatePlaying() {
     playingSpan.textContent = players[player]
     playingSpan.className = `${players[player]}`
     disableSideCells()
-    //disableCells(!playing)
 }
 
 function updateCells() {
@@ -104,18 +104,19 @@ function initSeeds() {
     for (let i = 0; i < cells.length; i++) {
         cells[i] = []
         for (let j = 0; j < 4; j++) {
-            let seed = createSeed()
+            let texture = i < 6 ? playersSeed[0] : playersSeed[1]
+            let seed = createSeed(texture)
             addSeed(i, seed)
             cells[i].push(seed)
         }
     }
 }
 
-function createSeed() {
+function createSeed(texture) {
     let top = Math.random() * 60 + 5
     let left = Math.random() * 60 + 5
     let rot = Math.random() * 90 - 45
-    let texture = textures[Math.floor(Math.random() * textures.length)]
+    //let texture = textures[Math.floor(Math.random() * textures.length)]
 
     let seed = document.createElement("img")
     seed.src = `https://assets.mcasset.cloud/1.21.4/assets/minecraft/textures/item/${texture}.png`
