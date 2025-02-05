@@ -24,10 +24,14 @@
     </div>
 
     <header>
-        <span class="playing">Playing: <span id="playing"></span></span>
+        <span class="subtitle" id="subtitle"><span class="prefix">Playing: </span><span id="playing"></span></span>
     </header>
+    
     <div class="game">
-        <button class="score red"><span>0</span></button>
+        <button class="score red">
+            <span>0</span>
+            <span class="give-up" onclick="showWinnerColor('blue')">Give Up</span>
+        </button>
         <button id="0" class="cell blue"><span>0</span></button>
         <button id="1" class="cell blue"><span>0</span></button>
         <button id="2" class="cell blue"><span>0</span></button>
@@ -40,7 +44,10 @@
         <button id="8" class="cell red"><span>0</span></button>
         <button id="7" class="cell red"><span>0</span></button>
         <button id="6" class="cell red"><span>0</span></button>
-        <button class="score blue"><span>0</span></button>
+        <button class="score blue">
+            <span>0</span>
+            <span class="give-up" onclick="showWinnerColor('red')">Give Up</button>
+        </button>
     </div>
 
     <div class="interface" id="interface">

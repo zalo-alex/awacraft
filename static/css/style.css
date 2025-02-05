@@ -75,7 +75,7 @@ header {
         filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
     }    
 
-    .playing {
+    .subtitle {
         color: white;
         filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
         background-color: rgba(0, 0, 0, 0.4);
@@ -116,6 +116,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
     &.red {
         background-image: url(/static/assets/red_terracotta.png);
@@ -165,6 +166,7 @@ header {
     background-position: center;
     image-rendering: pixelated;
     grid-row: 1 / 3;
+    position: relative;
 
     span {
         text-shadow: 3px 3px #4C4C4C;
@@ -179,5 +181,16 @@ header {
     }
     &.blue {
         background-image: url(/static/assets/blue_wool.png);
+    }
+
+    .give-up {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        text-align: center;
+        padding: 2px;
+        background-color: rgba(0, 0, 0, 0.4);
+        cursor: pointer;
     }
 }
