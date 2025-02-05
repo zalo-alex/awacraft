@@ -176,7 +176,7 @@ function createSeed(texture) {
     let rot = Math.random() * 90 - 45
 
     let seed = document.createElement("img")
-    seed.src = `https://assets.mcasset.cloud/1.21.4/assets/minecraft/textures/item/${texture}.png`
+    seed.src = `/static/assets/${texture}.png`
     seed.classList.add("seed")
     seed.style = `--top: ${top}px; --left: ${left}px; --rot: ${rot}deg;`
 
